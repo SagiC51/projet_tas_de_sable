@@ -8,11 +8,24 @@
 
 #------Import des modules------###
 import tkinter as tk
-
+import random
+import numpy as np
 #------Variables globales------###
 #------Fonctions------###
 def aleat():
-    pass
+    """
+    Entrée:
+    Sortie:
+    """
+    L = []
+    for i in range (0,5):
+        L1 = []
+        aleat = random.randint(0, 10)
+        L1+=aleat
+        if len(L1) > 3:
+            L+=L1
+            L1=[]
+
 #------Programme principale------###
 
 racine = tk.Tk()
