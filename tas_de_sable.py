@@ -8,29 +8,25 @@
 
 #------Import des modules------###
 import tkinter as tk
-<<<<<<< HEAD
 import random
 import numpy as np
-=======
-#-----------Constate-----------###
-HEIGHT_CANVAS = WIDHT_CANVAS = 400
->>>>>>> 1e28f7add5944fe44c3616bdd092e6e85bffd138
 #------Variables globales------###
 
 #------Fonctions------###
 def aleat():
     """
-    Entrée:
-    Sortie:
+    Entrée: 
+    Sortie: Liste de liste aléatoire
     """
     L = []
-    for i in range (0,5):
-        L1 = []
-        aleat = random.randint(0, 10)
-        L1+=aleat
-        if len(L1) > 3:
-            L+=L1
-            L1=[]
+    L1 = [0,0,0]
+    for i in range(0,3):
+        for j in range (0,3):
+            aleat = random.randint(0, 9)
+            L1[j]+=aleat
+        L.append(L1)
+        L1=[0,0,0]
+    return L
 
 #------Programme principale------###
 
