@@ -9,7 +9,6 @@
 #------Import des modules------##
 #
 import tkinter as tk
-<<<<<<< HEAD
 #-----------Constate-----------#
 
 HEIGHT_CANVAS = WIDHT_CANVAS = 400
@@ -17,19 +16,12 @@ HEIGHT_CANVAS = WIDHT_CANVAS = 400
 
 #------Fonctions------##
 
-=======
-<<<<<<< HEAD
 import random
 import numpy as np
-=======
 #-----------Constate-----------###
 HEIGHT_CANVAS = WIDHT_CANVAS = 400
->>>>>>> 1e28f7add5944fe44c3616bdd092e6e85bffd138
 #------Variables globales------###
->>>>>>> 0c82359a42534697b8305ba6872b386e74db5951
-
 def aleat():
-<<<<<<< HEAD
     pass
 
 
@@ -52,7 +44,6 @@ def Init():
 
 #------Programme principale------##
 #
-=======
     """
     Entrée:
     Sortie:
@@ -67,7 +58,6 @@ def Init():
             L1=[]
 
 #------Programme principale------###
->>>>>>> 0c82359a42534697b8305ba6872b386e74db5951
 
 racine = tk.Tk()
 racine.title("Sandpiles")
