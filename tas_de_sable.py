@@ -17,10 +17,8 @@ def aleat():
 
 racine = tk.Tk()
 racine.title("Sandpiles")
-racine.geometry("1080x720")
+racine.geometry("720x720")
 
 bouton = tk.Button(text="aléatoire")
-bouton.grid(row=1, column=1)
-
-
+bouton.grid(row=1, column=1, columnspan= 1, rowspan=1)
 racine.mainloop()
