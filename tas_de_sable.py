@@ -21,6 +21,6 @@ racine.geometry("1080x720")
 
 bouton = tk.Button(text="aléatoire")
 bouton.grid(row=1, column=1)
-#bjr
+
 
 racine.mainloop()
