@@ -8,9 +8,15 @@
 
 #------Import des modules------###
 import tkinter as tk
+<<<<<<< HEAD
 import random
 import numpy as np
+=======
+#-----------Constate-----------###
+HEIGHT_CANVAS = WIDHT_CANVAS = 400
+>>>>>>> 1e28f7add5944fe44c3616bdd092e6e85bffd138
 #------Variables globales------###
+
 #------Fonctions------###
 def aleat():
     """
@@ -30,7 +36,8 @@ def aleat():
 
 racine = tk.Tk()
 racine.title("Sandpiles")
-racine.geometry("720x720")
-bouton = tk.Button(text="aléatoire")
-bouton.grid(row=1, column=1, columnspan= 1, rowspan=1)
+Canvas = tk.Canvas(bg='white', height=HEIGHT_CANVAS, width=WIDHT_CANVAS)
+bouton = tk.Button(text="aléatoire", height=10, width=30)
+Canvas.grid(row=1, column=1, columnspan=1, rowspan=1)
+bouton.grid(row=1, column=1, columnspan=1, rowspan=1)
 racine.mainloop()
