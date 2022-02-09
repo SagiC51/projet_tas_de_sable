@@ -6,59 +6,62 @@
 # https://github.com/uvsq21918050/projet_tas_de_sable
 #########################################
 
-#------Import des modules------##
-#
+#------Import des modules------###
 import tkinter as tk
-#-----------Constate-----------#
-
-HEIGHT_CANVAS = WIDHT_CANVAS = 400
-#------Variables globales------#
-
-#------Fonctions------##
-
 import random
-#-----------Constate-----------###
-HEIGHT_CANVAS = WIDHT_CANVAS = 500
-#------Variables globales------###
-def aleat():
+
+###-----Constantes------###
+HEIGHT_CANVAS = WIDHT_CANVAS = 400
+L_aleat = []
+
+###------Variables globales------###
+
+###------Fonction------###
+def init():
     """
-    Entrée: 
-    Sortie: Liste de liste aléatoire
+    Initialisation de notre grille
     """
-    L = []
-    L1 = [0,0,0]
-    for i in range(0,3):
-        for j in range (0,3):
-            aleat = random.randint(0, 9)
-            L1[j]+=aleat
-        L.append(L1)
-        L1=[0,0,0]
-    return L
+    # i et j nous permettent de gérer les coordonnées des points délimitant le canvas
+    for i in range (0,3):
+        for j in range(1,4):
+            Canvas.create_rectangle(i*HEIGHT_CANVAS/3, (j-1)*HEIGHT_CANVAS/3, (i+1)*HEIGHT_CANVAS/3, j*WIDHT_CANVAS/3,
+                                    fill='black', outline='white')
 
+def listAleat(Liste_vide):
+    """
+    Prend en entrée une liste vide]
+    Renvoie une liste à deux dimensions de manières aléatoires 
+    """
+    L1 = [0, 0, 0]
+    for i in range (0, 3):
+        for j in range (0, 3):
+            aleat = random.randint(0, 4)
+            L1[j] += aleat
+        Liste_vide.append(L1)
+        L1 = [0, 0, 0]
+    print(Liste_vide)
+    return Liste_vide
 
-def Init():
-    xh = yh = 0
-    xb = yb = 100
-    Canvas.create_rectangle(xh, yh, xb, yb, fill='black', outline='white')
-    while yb != HEIGHT_CANVAS:
-        if xb == WIDHT_CANVAS:
-            xh = 0
-            xb = 100
-            yh = yb
-            yb += 100
-            Canvas.create_rectangle(xh, yh, xb, yb, fill='black', outline='white')
-        while xb != WIDHT_CANVAS:
-            xh = xb
-            xb += 100
-            Canvas.create_rectangle(xh, yh, xb, yb, fill='black', outline='white')
+def maj(Liste):
+    """
+    Prend en entrée une liste, de taille 2, à deux dimension et renvoie les canvas correspondant à la liste
+    """
+    liste_couleur = ["black", "grey", "blue", "purple", "yellow", "orange", "red"]
+    # i et j nous permettent de gérer les coordonnées des points délimitant le canvas 
+    for i in range (0,3):
+        for k in range (1,4):
+            # On regarde à quelle couleur correspond notre chiffre puis dessine notre canvas
+            for l in range (0,8):
+                if Liste[i][k-1] == l:
+                    Canvas.create_rectangle((k-1)*HEIGHT_CANVAS/3, i*HEIGHT_CANVAS/3, k*HEIGHT_CANVAS/3, (i+1)*WIDHT_CANVAS/3,
+                                            fill=liste_couleur[l], outline='white')
 
-#------Programme principale------###
-
+###------Programme principale------###
 racine = tk.Tk()
 racine.title("Sandpiles")
 Canvas = tk.Canvas(bg='white', height=HEIGHT_CANVAS, width=WIDHT_CANVAS)
-bouton = tk.Button(text="aléatoire", font=30,command= aleat)
-Init()
+bouton_maj = tk.Button(text="Génération", font=30, command=lambda:maj(listAleat(L_aleat)))
+init()
 Canvas.grid(row=1, column=2, columnspan=1, rowspan=2)
-bouton.grid(row=1, column=1)
+bouton_maj.grid(row=1, column=1)
 racine.mainloop()
