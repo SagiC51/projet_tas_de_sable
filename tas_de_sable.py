@@ -9,14 +9,17 @@
 ###------Import des modules------###
 import tkinter as tk
 import random as random
-
+import copy
+import time
+from turtle import update 
 ###-----Constantes------###
 HEIGHT_CANVAS = WIDHT_CANVAS = 400
-N = 10  #grid_size = 3
+N = 5  #grid_size = 3
 # ##------Variables globales------###
 L_aleat = []  # Configuration courante
 Grille = []  # Grille
 event = False
+event2 = False
 config = 0
 
 ###------Fonctions------###
@@ -25,6 +28,11 @@ def init():
     Initialisation de notre grille et de la configuration Courante.
     """
     global L_aleat, Grille
+    global event
+    if event == True:
+        Bouton_STOP['text'] = "STOP"
+        event = False
+
     # i et j nous permettent de gérer les coordonnées des points délimitants le
     # canvas
     L_aleat = []  # Configuration courante
@@ -55,7 +63,7 @@ def listAleat(Liste_vide, taille):
             L1[j] += aleat
         Liste_vide.append(L1)
         L1 = taille * [0]
-    print(Liste_vide, "liste vide")
+    print(Liste_vide)
     return Liste_vide
 
 
@@ -95,12 +103,12 @@ def first_stab(L):
     """
     renvoie une première étape de stabilisation
     """
-    L2 = listAleat([], len(L))
-    for i in range(0, len(L)):
-        for j in range(0, len(L)):
-            L2[i][j] = 0
-            L2[i][j] += L[i][j]
-
+    L2 = copy.deepcopy(L)
+    # L2 = listAleat([], len(L))
+    # for i in range(0, len(L)):
+    #     for j in range(0, len(L)):
+    #         L2[i][j] = 0
+    #         L2[i][j] += L[i][j]
     for i in range(0, len(L)):
         for j in range(0, len(L)):
             if L2[i][j] >= 4:
@@ -147,31 +155,76 @@ def first_stab(L):
                     L2[i][j-1] += 1
                     L2[i+1][j] += 1
                     L2[i-1][j] += 1
-    print("liste l2:",L2)
+            maj(L2)
+    print(L2)
+    # L3 = listAleat([], len(L))
+    # maj(L3)
+    # for i in range(0, len(L)):
+    #     for j in range(0, len(L)):
+    #         L3[i][j] = 0
+    #         L3[i][j] += L2[i][j]
+    # L3 = copy.deepcopy(L2)
+    # maj(L3)
     return L2
 
 def stabilization(Liste):
     """
     On recommence la stabilisation jusqu'à ce que la configuration soit stable
     """
+    # global event
+    # event = False
+    # i = 0
+    # j = 0
+    # while i != len(Liste)-1:
+    #     while j != len(Liste)-1:
+    #         if Liste[i][j] >= 4 and event == False:
+    #             Liste = first_stab(Liste) 
+    #             j = 0
+    #             i = 0
+    #         else:
+    #             j+=1
+    #     j=0
+    #     i+=1
+    # return Liste
+
     global event
+    global Liste2
     event = False
     i = 0
     j = 0
     while i != len(Liste)-1 and j != len(Liste)-1:
-        if Liste[i][j] >= 4 and event == False:
-            Liste = first_stab(Liste) 
-            j = 0
-            i = 0
+        if event == False:
+            if Liste[i][j] >= 4:
+                Liste = first_stab(Liste)
+                maj(Liste)
+                Canvas.update()
+                time.sleep(0.5)
+                j = 0
+                i = 0
+                print(event)
+            else:
+                j+=1
+                if j == len(Liste)-1:
+                    i+=1
+                    j=0
         else:
-            j+=1
-            if j == len(Liste)-1:
-                j=0
-                i+=1
+            Liste2 = copy.deepcopy(Liste)
+            break
     return Liste
+
+def On_off():
+    global event, Liste2 , event2
+    if event == False:
+        Bouton_STOP['text'] = "GO"
+        event = True
+    else:
+        Bouton_STOP['text'] = "STOP"
+        event = False
+        stabilization(Liste2)
 
 def interuption():
     event = True
+    print(event, "bjr")
 
 def num_config(n):
     """
@@ -185,30 +238,14 @@ def addition():
     """
     Renvoie la configuration qui est la somme case par case
     des deux configurations
-    """ 
-    L1 = configuration_random()
-    L2 = configuration_pile(3) 
-    L3 = max_stable() 
-    L4 = identity()
-    win = tk.Toplevel(racine)
-    win.geometry("150x100")
-    win.title("addition")
-    Bouton_configuration_aleat = tk.Button(win, text="aleatoire", font=30, command=lambda:num_config(0))
-    Bouton_configuration_pile = tk.Button(win, text="pile", font=30, command=lambda:num_config(1))
-    Bouton_configuration_max_stable = tk.Button(win, text="max-stable", font=30, command=lambda:num_config(2))
-    Bouton_configuration_identity = tk.Button(win, text="identity", font=30, command=lambda:num_config(3))
-   
-    Bouton_configuration_aleat.grid(row=2, column=2)
-    Bouton_configuration_pile.grid(row=4, column=2)
-    Bouton_configuration_max_stable.grid(row=2, column=4)
-    Bouton_configuration_identity.grid(row=4, column=4)
-
-    L_config = [L1,L2,L3,L4]
+    """
+    L_config = [configuration_random(), configuration_pile(3), max_stable(), identity()]
+     
     for i in range(0,len(L_aleat)):
         for j in range(0, len(L_aleat)):
-            print(L_config[config][i][j] , 'hahhahaha')
+            print(L_config[config][i][j])
             L_aleat[i][j] += L_config[config][i][j]
-            print(L_config[config][i][j] , 'hahhahaha')
+            print(L_config[config][i][j])
             print(config)
             maj(L_aleat)
             print(L_aleat)
@@ -219,27 +256,15 @@ def soustraction():
     Renvoie la configuration qui est la soustraction case par case
     des deux configurations
     """
-    win = tk.Toplevel(racine)
-    win.geometry("150x100")
-    win.title("addition")
-    
-    Bouton_configuration_aleat = tk.Button(win, text="aleatoire", font=30, command=lambda:configuration_random())
-    Bouton_configuration_pile = tk.Button(win, text="pile", font=30, command=lambda:configuration_pile(7))
-    Bouton_configuration_max_stable = tk.Button(win, text="max-stable", font=30, command=lambda:max_stable())
-    Bouton_configuration_identity = tk.Button(win, text="identity", font=30, command=lambda:identity())
-   
-    Bouton_configuration_aleat.grid(row=2, column=2)
-    Bouton_configuration_pile.grid(row=4, column=2)
-    Bouton_configuration_max_stable.grid(row=2, column=4)
-    Bouton_configuration_identity.grid(row=4, column=4)
-
-    # for i in range(0,len(L_aleat)):
-    #     for j in range(0, len(L_aleat)):
-    #         L_aleat[i][j] -= L_config[int(n)][i][j]
-    #         if L_aleat[i][j] < 0 :
-    #             L_aleat[i][j] = 0
-    #         maj(L_aleat)
-    #         print(L_aleat)
+  
+    L_config = [configuration_random(), configuration_pile(3), max_stable(), identity()]
+    for i in range(0,len(L_aleat)):
+        for j in range(0, len(L_aleat)):
+            L_aleat[i][j] -= L_config[int(1)][i][j]
+            if L_aleat[i][j] < 0 :
+                L_aleat[i][j] = 0
+            maj(L_aleat)
+            print(L_aleat)
 
 def configuration_random():
     """
@@ -293,6 +318,8 @@ def doublemaxstable():
     return L
 
 def identity():
+    global L_aleat, Grille
+    global event2
     doublemax = doublemaxstable()
     stabilisation = stabilization(doublemax)
     for i in range(0,len(L_aleat)):
@@ -300,6 +327,7 @@ def identity():
             doublemax[i][j] -= stabilisation[i][j]
     identity = stabilization(doublemax)
     maj(identity)
+    
     return identity
     
 # ##------Programme principale------###
@@ -311,18 +339,18 @@ Bouton_init = tk.Button(text='Lancer la simulation', font=30, command=init)
 Bouton_maj = tk.Button(text="Génération", font=30, command=lambda:
                             maj(listAleat(L_aleat, N)))
 Bouton_Calcul = tk.Button(text="Calcul", font=30, command=lambda:calcul())
-Bouton_stabilisation = tk.Button(text="stabilisation", font=30, command=lambda:maj(stabilization(L_aleat)))
+Bouton_stabilisation = tk.Button(text="stabilisation", font=30, command=lambda:stabilization(L_aleat))
 Bouton_addition = tk.Button(text="addition", font=30, command=lambda:addition())
 Bouton_soustraction = tk.Button(text="soustraction", font=30, command=lambda:soustraction())
 Bouton_configuration_aleat = tk.Button(text="aleat", font=30, command=lambda:configuration_random())
 Bouton_configuration_pile = tk.Button(text="pile", font=30, command=lambda:configuration_pile(7))
 Bouton_configuration_max_stable = tk.Button(text="max-stable", font=30, command=lambda:max_stable())
 Bouton_configuration_identity = tk.Button(text="identity", font=30, command=lambda:identity())
-Bouton_STOP = tk.Button(text="STOP", font=30, command=lambda:interuption())
+Bouton_STOP = tk.Button(text="STOP", font=30, command=lambda:On_off())
 
 # Placement des éléments
-Canvas.grid(row=1, column=2, columnspan=1, rowspan=3)
-Bouton_init.grid(row=1, column=1)
+Canvas.grid(row=1, column=2, columnspan=1, rowspan=11)
+Bouton_init.grid(row=1, column=1,  columnspan=1)
 Bouton_maj.grid(row=2, column=1)
 Bouton_Calcul.grid(row=3, column=1)
 Bouton_stabilisation.grid(row=4, column=1)
