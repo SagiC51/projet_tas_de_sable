@@ -234,7 +234,7 @@ def soustraction():
                 identity()]
     for i in range(0, len(L_aleat)):
         for j in range(0, len(L_aleat)):
-            L_aleat[i][j] -= L_config[int(1)][i][j]
+            L_aleat[i][j] -= L_config[config][i][j]
             if L_aleat[i][j] < 0:
                 L_aleat[i][j] = 0
             maj(L_aleat)
