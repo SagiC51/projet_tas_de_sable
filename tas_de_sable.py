@@ -30,7 +30,10 @@ Case = 1
 
 
 def init():
-    # Initialisation de notre grille et de la configuration Courante.
+    """""""""""""""""
+    Initialisation de notre grille et de la configuration Courante.
+    """"""""""""""""
+
     global L_aleat, Grille, run, Case
     if run is True:
         Bouton_STOP['text'] = "STOP"
@@ -76,7 +79,7 @@ def listAleat(Liste_vide, taille):
 def maj(Liste):
     # Prend en entrée une liste, de taille 2, à deux dimension et renvoie les
     # canvas correspondant à la liste
-    
+ 
     liste_couleur = ["black", "yellow", "green", "blue", "purple", "yellow",
                      "orange", "red"]
     # i et j nous permettent de gérer les coordonnées des points délimitant
